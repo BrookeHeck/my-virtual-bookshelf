@@ -5,22 +5,29 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const Book = require('./models/books.js');
+const User = require('./models/user.js');
 const { response } = require('express');
+const verifyUser = require('./auth/authorize.js');
 
 // USE
 const app = express();
 app.use(cors());
 app.use(express.json());
-const PORT = process.env.PORT || 3002
+
 
 // myBookProject DB
+const PORT = process.env.PORT || 3002
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
-db.once('open', function() {
+db.once('open', function () {
   console.log('Mongoose is connected');
 });
 mongoose.connect(process.env.DB_URI);
+
+// This will run the "verify" code on every route automatically
+// If the user is valid, we'll have them in request.user in every route!
+// If not, it'll throw an error for us
+app.use(verifyUser);
 
 // ROUTES
 app.get('/', (request, response) => {
@@ -30,12 +37,13 @@ app.get('/', (request, response) => {
 app.get('/books', getAllBooks);
 
 async function getAllBooks(request, response, next) {
-  try {
-    let allBooks = await Book.find();
-    response.status(200).send(allBooks);
-  } catch(error) {
-    next(error);
-  }
+  User.find({email: request.query.email}, function (err, data) {
+    if (!err) {
+      response.status(200).send(data);
+    } else {
+      throw err;
+    }
+  }).clone().catch(function (err) { console.log(err) });
 }
 
 app.get('*', (request, response) => {

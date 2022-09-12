@@ -5,7 +5,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const Book = require('./models/books.js');
+const User = require('./models/user.js');
 const { response } = require('express');
 const verifyUser = require('./auth/authorize.js');
 
@@ -19,7 +19,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 3002
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
-db.once('open', function() {
+db.once('open', function () {
   console.log('Mongoose is connected');
 });
 mongoose.connect(process.env.DB_URI);
@@ -37,12 +37,13 @@ app.get('/', (request, response) => {
 app.get('/books', getAllBooks);
 
 async function getAllBooks(request, response, next) {
-  try {
-    let allBooks = await Book.find({email: req.user.email});
-    response.status(200).send(allBooks);
-  } catch(error) {
-    next(error);
-  }
+  User.find({email: request.query.email}, function (err, data) {
+    if (!err) {
+      response.status(200).send(data);
+    } else {
+      throw err;
+    }
+  }).clone().catch(function (err) { console.log(err) });
 }
 
 app.get('*', (request, response) => {

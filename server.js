@@ -5,9 +5,10 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const User = require('./models/user.js');
-const { response } = require('express');
 const verifyUser = require('./auth/authorize.js');
+const getAllUsers = require('./modules/getAllUsers.js');
+const getUser = require('./modules/getUser.js');
+const createUser = require('./modules/createUser');
 
 // USE
 const app = express();
@@ -34,17 +35,11 @@ app.get('/', (request, response) => {
   response.status(200).send('Books :)');
 });
 
-app.get('/books', getAllBooks);
 
-async function getAllBooks(request, response, next) {
-  User.find({email: request.query.email}, function (err, data) {
-    if (!err) {
-      response.status(200).send(data);
-    } else {
-      throw err;
-    }
-  }).clone().catch(function (err) { console.log(err) });
-}
+app.get('/all-users', getAllUsers);
+app.get('/user', getUser);
+app.post('/user', createUser);
+
 
 app.get('*', (request, response) => {
   response.status(404).send('Not here...');

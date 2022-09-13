@@ -4,7 +4,7 @@ const {Schema} = mongoose;
 
 const NoteSchema = ({
   header: {type: String, required: true},
-  date: {type: Date, required: true},
+  date: {type: String, required: true},
   note: {type: String, required: true}
 });
 

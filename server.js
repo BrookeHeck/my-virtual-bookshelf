@@ -8,7 +8,8 @@ const mongoose = require('mongoose');
 const verifyUser = require('./auth/authorize.js');
 const getAllUsers = require('./modules/getAllUsers.js');
 const getUser = require('./modules/getUser.js');
-const createUser = require('./modules/createUser');
+const createUser = require('./modules/createUser.js');
+const addBook = require('./modules/addBook.js');
 
 // USE
 const app = express();
@@ -39,6 +40,9 @@ app.get('/', (request, response) => {
 app.get('/all-users', getAllUsers);
 app.get('/user', getUser);
 app.post('/user', createUser);
+
+
+app.post('/add-book/:id', addBook);
 
 
 app.get('*', (request, response) => {

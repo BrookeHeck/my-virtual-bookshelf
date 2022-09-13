@@ -1,5 +1,4 @@
 const User = require('./../models/user.js');
-const Book = require('./../models/books.js');
 
 async function addBook(request, response, next) {
   let newBook = {

@@ -10,6 +10,7 @@ const getAllUsers = require('./modules/getAllUsers.js');
 const getUser = require('./modules/getUser.js');
 const createUser = require('./modules/createUser.js');
 const addBook = require('./modules/addBook.js');
+const deleteBook = require('./modules/deleteBook.js');
 
 // USE
 const app = express();
@@ -43,6 +44,7 @@ app.post('/user', createUser);
 
 
 app.post('/add-book/:id', addBook);
+app.put('/delete-book/:id', deleteBook);
 
 
 app.get('*', (request, response) => {

@@ -4,7 +4,7 @@ async function deleteBook(request, response, next) {
   let user = {};
   try {
     user = await User.findById(request.params.id);
-    user.userBooks.splice(user.userBooks.findIndex(book => book._id === request.body.id), 1);
+    user.userBooks.splice(user.userBooks.findIndex(book => book._id.equals(request.body._id)), 1);
   } catch(e) {
     console.log(e);
   }

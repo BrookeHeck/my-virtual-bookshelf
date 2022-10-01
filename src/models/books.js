@@ -1,7 +1,5 @@
 'use strict';
 
-const NoteSchema = require('./notes');
-
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
@@ -11,7 +9,6 @@ const BookSchema = new Schema({
   genre: {type: String},
   date: {type: String, required: true},
   status: {type: String},
-  lists: [String],
   user_id: {type: String, require: true},
 });
 

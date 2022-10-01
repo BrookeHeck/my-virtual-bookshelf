@@ -8,9 +8,7 @@ const {Schema} = mongoose;
 const UserSchema = new Schema({
   userName: {type: String, required: true},
   email: {type: String, required: true},
-  userBooks: [Book],
-  userLists: [String]
 });
 
-const UserModel = mongoose.model('User', UserSchema);
+const UserModel = mongoose.model('Users', UserSchema);
 module.exports = UserModel;

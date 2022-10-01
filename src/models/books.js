@@ -12,8 +12,8 @@ const BookSchema = new Schema({
   date: {type: String, required: true},
   status: {type: String},
   lists: [String],
-  notes: [NoteSchema],
-  quotes: [String]  
+  user_id: {type: String, require: true},
 });
 
-module.exports = BookSchema;
+const BookModel = mongoose.model('Books', BookSchema);
+module.exports = BookModel;

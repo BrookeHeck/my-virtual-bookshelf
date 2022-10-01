@@ -6,7 +6,7 @@ const NoteSchema = ({
   header: {type: String},
   date: {type: String, required: true},
   note: {type: String, required: true},
-  book_id: {type: Number, require: true}
+  book_id: {type: String, require: true}
 });
 
 const NoteModel = mongoose.model('Notes', NoteSchema);

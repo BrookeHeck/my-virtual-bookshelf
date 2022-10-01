@@ -10,6 +10,7 @@ router.post('/signup', (request, response) => {
   User.create({
     userName: request.body.userName,
     email: request.body.email,
+    role: 'User',
   })
   .then(newUser => response.status(200).send(newUser))
   .catch(error => {

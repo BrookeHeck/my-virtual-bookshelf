@@ -8,6 +8,7 @@ const cors = require('cors');
 // Routers
 const userRouter = require('./routes/users');
 const bookRouter = require('./routes/books');
+const noteRouter = require('./routes/notes');
 
 // USE
 const app = express();
@@ -21,6 +22,7 @@ app.get('/', (request, response) => {
 });
 app.use(userRouter);
 app.use(bookRouter);
+app.use(noteRouter);
 
 // ERRORS
 app.get('*', (request, response) => {

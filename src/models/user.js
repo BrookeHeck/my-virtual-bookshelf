@@ -1,15 +1,34 @@
 'use strict';
 
-const Book = require('./books.js');
-
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
+const bcrypt = require('bcrypt');
 
-const UserSchema = new Schema({
-  userName: {type: String, required: true},
-  email: {type: String, required: true},
-  role: {type: String, required: true}
+const userSchema = new Schema({
+  username: {type: String, required: true},
+  password: {type: mongoose.Mixed, required: true},
+  role: {type: String, required: true },
+  token: {type: String, required: true }
 });
 
-const UserModel = mongoose.model('Users', UserSchema);
-module.exports = UserModel;
+const userModel = mongoose.model('Users', userSchema);
+
+userModel.authenticateBasic = async function(username, password) {
+  const user = await this.findOne({username: username});
+  const valid = await bcrypt.compare(password, user.password);
+  if(valid) {return user}
+  throw new Error('Invalid User');
+};
+
+userModel.authenticateToken = async function(token) {
+  try {
+    const parsedToken = jwt.verify(token, SECRET);
+    const user = this.findOne({username: parsedToken.username });
+    if(user) {return user }
+    throw new Error('User not found');
+  } catch(e) {
+    throw new Error(e.message);
+  }
+}
+
+module.exports = userModel;

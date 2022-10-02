@@ -33,9 +33,16 @@ const client = jwksClient({
 });
 
 // Match the JWT's key to your Auth0 Account Key so we can validate it
-function getKey(header, callback) {
-  const signingKey = client.getSigningKey(header.kid).then(key => key.getPublicKey());
-  callback(null, signingKey);
+// function getKey(header, callback) {
+//   const signingKey = client.getSigningKey(header.kid).then(key => key.getPublicKey());
+//   callback(null, signingKey);
+// }
+
+function getKey(header, callback){
+  client.getSigningKey(header.kid, function(err, key) {
+    let signingKey = key.publicKey || key.rsaPublicKey;
+    callback(null, signingKey);
+  });
 }
 
 module.exports = verifyUser;

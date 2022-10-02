@@ -4,7 +4,7 @@ const users = require('./../models/user');
 
 module.exports = async (request, response, next) => {
   try {
-    if(!request.headers.authorization) {response.status(403).send('Invalid Login')}
+    if(!request.headers.authorization) {response.status(403).send('Invalid Authorization')}
     
     const token = request.headers.authorization.split(' ').pop();
     const validUser = await users.authenticateToken(token);
@@ -12,6 +12,7 @@ module.exports = async (request, response, next) => {
     request.token = validUser.token;
     next();
   } catch(e) {
-    response.status(403).send('Invalid Login');
+    console.log(e);
+    response.status(403).send('Invalid Authorization');
   }
 }

@@ -9,7 +9,7 @@ const BookSchema = new Schema({
   genre: {type: String},
   date: {type: String, required: true},
   status: {type: String},
-  user_id: {type: String, require: true},
+  user_id: {type: String, required: true},
 });
 
 const BookModel = mongoose.model('Books', BookSchema);

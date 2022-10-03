@@ -10,7 +10,7 @@ require('dotenv').config();
 const mockRequest = supertest(server);
 
 let userData = {
-  testUser: { username: 'user', password: 'password' },
+  testUser: { username: 'user', password: 'password', role:'admin' },
 };
 let accessToken = null;
 let userId = null;
@@ -24,6 +24,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await mockRequest
   .delete(`/remove-user/${userId}`)
+  .send({role:'admin'})
   .set('Authorization', `Bearer ${accessToken}`);
   db.disconnect();
 });
@@ -97,6 +98,7 @@ describe('Auth Router', () => {
   test('Succeeds with a valid token', async () => {
 
     const response = await mockRequest.get('/users')
+      .send({role:'admin'})
       .set('Authorization', `Bearer ${accessToken}`);
 
     expect(response.status).toBe(200);

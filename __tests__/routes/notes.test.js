@@ -4,14 +4,13 @@ process.env.SECRET = "TEST_SECRET";
 
 const db = require('./../../src/models');
 const supertest = require('supertest');
-const { expressJwtSecret } = require('jwks-rsa');
 const server = require('./../../src/server').server;
 require('dotenv').config();
 
 const mockRequest = supertest(server);
 
 const userData = {
-  testUser: { username: 'user', password: 'password' },
+  testUser: { username: 'user', password: 'password', role:'admin' },
 };
 
 const bookData = {
@@ -55,6 +54,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await mockRequest
     .delete(`/remove-user/${userId}`)
+    .send({role:'admin'})
     .set('Authorization', `Bearer ${accessToken}`);
   db.disconnect();
 });

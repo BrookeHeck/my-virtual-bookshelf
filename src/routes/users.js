@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const basicAuth = require('./../auth/basic-auth');
 const bearerAuth = require('./../auth/bearer-auth');
+const acl = require('./../auth/acl');
 const SECRET = process.env.SECRET || 'CHANGE_THE_SECRET';
 
 router.post('/signup', async (request, response) => {
@@ -36,7 +37,7 @@ router.post('/signin', basicAuth, (request, response) => {
   }
 });
 
-router.delete('/remove-user/:id', async (request, response) => {
+router.delete('/remove-user/:id', bearerAuth, acl, async (request, response) => {
   try {
     const userBooks = await Book.find({user_id: request.params.id});
     userBooks.forEach(async (book) => {
@@ -50,7 +51,7 @@ router.delete('/remove-user/:id', async (request, response) => {
   }
 });
 
-router.get('/users', bearerAuth, async (request, response) => {
+router.get('/users', bearerAuth, acl, async (request, response) => {
   try {
     const userRecords = await User.find();
     const list = userRecords.map(user => {return {username: user.username, _id: user._id}});

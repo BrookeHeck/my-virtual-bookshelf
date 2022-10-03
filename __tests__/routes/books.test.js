@@ -10,7 +10,7 @@ require('dotenv').config();
 const mockRequest = supertest(server);
 
 const userData = {
-  testUser: { username: 'user', password: 'password' },
+  testUser: { username: 'testUser', password: 'password', role:'admin' },
 };
 
 const bookData = {
@@ -40,6 +40,7 @@ beforeAll(async () => {
 afterAll(async () => {
   let response = await mockRequest
     .delete(`/remove-user/${userId}`)
+    .send({role:'admin'})
     .set('Authorization', `Bearer ${accessToken}`);
   db.disconnect();
 });

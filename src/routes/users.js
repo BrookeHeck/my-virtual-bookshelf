@@ -14,7 +14,7 @@ const SECRET = process.env.SECRET || 'CHANGE_THE_SECRET';
 
 router.post('/signup', async (request, response) => {
   try {
-    request.body.role = 'user'
+    request.body.role = request.body.role ? request.body.role : 'user';
     request.body.password = await bcrypt.hash(request.body.password, 10);
     request.body.token = jwt.sign({username: request.body.username}, SECRET);
     const newUser = await User.create(request.body);
@@ -39,10 +39,8 @@ router.post('/signin', basicAuth, (request, response) => {
 router.delete('/remove-user/:id', async (request, response) => {
   try {
     const userBooks = await Book.find({user_id: request.params.id});
-    console.log(userBooks);
     userBooks.forEach(async (book) => {
       const response = await Notes.deleteMany({book_id: book._id});
-      console.log(response.text);
     });
     await Book.deleteMany({user_id: request.params.id });
     await User.deleteOne({_id: request.params.id});

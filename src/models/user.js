@@ -26,7 +26,7 @@ userModel.authenticateToken = async function(token) {
   try {
     const parsedToken = jwt.verify(token, SECRET);
     const user = this.findOne({username: parsedToken.username });
-    if(user) {return user }
+    if(user) {return user}
     throw new Error('User not found');
   } catch(e) {
     throw new Error(e.message);

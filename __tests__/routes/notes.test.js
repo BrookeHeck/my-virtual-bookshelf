@@ -92,7 +92,7 @@ describe('Notes Router', () => {
       .send(noteData);
     const updatedNote = response.body;
     expect(response.status).toEqual(200);
-    expect(updatedNote.note).toEqual('Another Note');
+    expect(updatedNote.note).toEqual('Another note');
   });
 
   test('Delete note', async () => {

@@ -4,10 +4,9 @@ on: [push]
 
 jobs:
 
-  deployment:
-    environment: production
-    
   build:
+
+    environment: production
 
     runs-on: ubuntu-latest
 

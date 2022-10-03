@@ -3,6 +3,10 @@ name: Run Javascript Tests
 on: [push]
 
 jobs:
+
+  deployment:
+    environment: production
+    
   build:
 
     runs-on: ubuntu-latest

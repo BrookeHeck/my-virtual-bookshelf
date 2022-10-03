@@ -3,6 +3,9 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('./../models/books');
+const bearerAuth = require('./../auth/bearer-auth');
+
+router.use(bearerAuth);
 
 router.post('/my-books', async (request, response) => {
   try {

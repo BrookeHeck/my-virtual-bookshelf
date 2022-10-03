@@ -12,7 +12,6 @@ module.exports = async (request, response, next) => {
     request.token = validUser.token;
     next();
   } catch(e) {
-    console.log(e);
     response.status(403).send('Invalid Authorization');
   }
 }

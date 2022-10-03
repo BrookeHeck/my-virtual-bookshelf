@@ -2,10 +2,10 @@
 
 const express = require('express');
 const router = express.Router();
-const verifyUser = require('./../auth/authorize');
+const bearerAuth = require('./../auth/bearer-auth');
 const Note = require('./../models/notes');
 
-router.use(verifyUser);
+router.use(bearerAuth);
 
 router.post('/notes', async (request, response) => {
   try {

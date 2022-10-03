@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 
 const User = require('./../models/user');
+const Book = require('./../models/books');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const basicAuth = require('./../auth/basic-auth');
@@ -18,7 +19,6 @@ router.post('/signup', async (request, response) => {
     const newUser = await User.create(request.body);
     response.status(201).send(newUser);
   } catch(e) {
-    console.log(e);
     response.status(500).send('Invalid signup');
   }  
 });
@@ -31,7 +31,6 @@ router.post('/signin', basicAuth, (request, response) => {
     };
     response.status(200).send(user);
   } catch(e) {
-    console.log(e);
     response.status(500).send('Error logging in');
   }
 });
@@ -39,6 +38,7 @@ router.post('/signin', basicAuth, (request, response) => {
 router.delete('/remove-user/:id', async (request, response) => {
   try {
     await User.deleteOne({_id: request.params.id});
+    await Book.deleteMany({user_id: request.params.id });
     response.status(200).send('Successful deletion');
   } catch(e) {
     response.status(500).send('Error deleting user');
@@ -48,7 +48,7 @@ router.delete('/remove-user/:id', async (request, response) => {
 router.get('/users', bearerAuth, async (request, response) => {
   try {
     const userRecords = await User.find();
-    const list = userRecords.map(user => user.username);
+    const list = userRecords.map(user => {return {username: user.username, _id: user._id}});
     response.status(200).send(list);
   } catch(e) {
     response.status(500).send('Error retrieving users');

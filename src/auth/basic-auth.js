@@ -12,7 +12,6 @@ module.exports = async (request, response, next) => {
     request.user = await users.authenticateBasic(user, pass);
     next();
   } catch(e) {
-    console.log(e);
     response.status(403).send('Invalid Login');
   }
 }

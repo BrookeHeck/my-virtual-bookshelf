@@ -11,4 +11,7 @@ module.exports = {
       });
       mongoose.connect(dbUri);
     },
+  disconnect: () => {
+    mongoose.connection.close();
+  },
 }

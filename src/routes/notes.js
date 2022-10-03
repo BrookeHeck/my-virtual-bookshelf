@@ -12,7 +12,6 @@ router.post('/notes', async (request, response) => {
     const noteRecord = await Note.create(request.body);
     response.status(201).send(noteRecord);
   } catch(e) {
-    console.log(e);
     response.status(500).send('Error creating note');
   }
 });
@@ -22,7 +21,6 @@ router.get('/notes/:id', async (request, response) => {
     const noteRecords = await Note.find({book_id: request.params.id});
     response.status(200).send(noteRecords); 
   } catch(e) {
-    console.log(e);
     response.status(500).send('Error finding notes');
   }
 });
@@ -33,7 +31,6 @@ router.put('/notes/:id', async (request, response) => {
     const noteRecord = await Note.findById(request.params.id);
     response.status(200).send(noteRecord);
   } catch(e) {
-    console.log(e);
     response.status(500).send('Error updating notes');
   }
 });
@@ -43,7 +40,6 @@ router.delete('/notes/:id', async (request, response) => {
     await Note.deleteOne({_id: request.params.id});
     response.status(200).send(`Successfully delete note with id ${request.params.id}`);
   } catch(e) {
-    console.log(e);
     response.status(500).send('Error deleting note');
   }
 });

@@ -5,6 +5,7 @@ const router = express.Router();
 
 const User = require('./../models/user');
 const Book = require('./../models/books');
+const Notes = require('./../models/notes');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const basicAuth = require('./../auth/basic-auth');
@@ -37,8 +38,14 @@ router.post('/signin', basicAuth, (request, response) => {
 
 router.delete('/remove-user/:id', async (request, response) => {
   try {
-    await User.deleteOne({_id: request.params.id});
+    const userBooks = await Book.find({user_id: request.params.id});
+    console.log(userBooks);
+    userBooks.forEach(async (book) => {
+      const response = await Notes.deleteMany({book_id: book._id});
+      console.log(response.text);
+    });
     await Book.deleteMany({user_id: request.params.id });
+    await User.deleteOne({_id: request.params.id});
     response.status(200).send('Successful deletion');
   } catch(e) {
     response.status(500).send('Error deleting user');

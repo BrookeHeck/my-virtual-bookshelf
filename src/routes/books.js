@@ -12,7 +12,6 @@ router.post('/my-books', async (request, response) => {
     const bookRecord = await Book.create(request.body);
     response.status(201).send(bookRecord);
   } catch(e) {
-    console.log(e);
     response.status(500).send("Error creating book");
   }
 });
@@ -22,7 +21,6 @@ router.get('/my-books/:id', async (request, response) => {
     const bookRecords = await Book.find({user_id: request.params.id});
     response.status(200).send(bookRecords);
   } catch(e) {
-    console.log(e);
     response.status(500).send('Error retrieving user books');
   }
 });
@@ -33,7 +31,6 @@ router.put('/my-books/:id', async (request, response) => {
     const bookRecord = await Book.findById(request.params.id);
     response.status(200).send(bookRecord);
   } catch (e) {
-    console.log(e);
     response.status(500).send('Error updating book');
   }
 });
@@ -43,7 +40,6 @@ router.delete('/my-books/:id', async (request, response) => {
     await Book.deleteOne({ _id: request.params.id });
     response.status(200).send(`Book _id ${request.params.id} successfully deleted`);
   } catch(e) {
-    console.log(e);
     response.status(500).send('Error deleting book');
   }
 })

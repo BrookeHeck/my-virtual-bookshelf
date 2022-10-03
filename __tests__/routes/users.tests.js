@@ -29,7 +29,7 @@ afterAll(async () => {
   db.disconnect();
 });
 
-describe('Auth Router', () => {
+describe('User Router', () => {
 
   test('Can create a new user', async () => {
 

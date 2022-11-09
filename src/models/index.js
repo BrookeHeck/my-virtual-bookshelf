@@ -5,24 +5,24 @@ const MongoMemoryServer = require('mongodb-memory-server').MongoMemoryServer;
 const db = mongoose.connection;
 require('dotenv').config();
 
-const getDbUri = async () => {
-  const mongoServer = await MongoMemoryServer.create();
-  const uri = mongoServer.getUri();
-  return uri;
+const getServer = async () => {
+  return MongoMemoryServer.create();
 }
+const memoryServer = getServer();
 
 module.exports = {
   db: db,
+
   connect: async () => {
       
       db.on('error', console.error.bind(console, 'connection error'));
       db.once('open', function () {
       console.log('Mongoose is connected');
       });
-      const uri = process.env.DB_URI || await getDbUri();
+      const uri = (await memoryServer).getUri();
       mongoose.connect(uri);
     },
-  disconnect: () => {
-    mongoose.connection.close();
+  disconnect: async () => {
+    await mongoose.disconnect();
   },
 }

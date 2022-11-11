@@ -40,8 +40,10 @@ router.get('/lists/:id/:listName', async (request, response) => {
 
 router.put('/lists/:id', async (request, response) => {
   try {
-    const listRecord = await List.find({_id: request.params.id});
-    listRecord.books.push(request.body);
+    console.log(request.body);
+    const updatedList = await List.findByIdAndUpdate(request.params.id, request.body);
+    console.log(updatedList);
+    response.status(200).send(updatedList);
   } catch(e) {
     console.log(e);
     response.status(500).send('Error adding book to list');
@@ -51,8 +53,8 @@ router.put('/lists/:id', async (request, response) => {
 router.delete('/lists/:id', async (request, response) => {
   try {
     const listRecord = await List.find({_id: request.params.id});
-    await Book.deleteOne({ _id: request.params.id });
-    response.status(200).send(listRecord[0]);
+    await List.deleteOne({ _id: request.params.id });
+    response.status(200).send(listRecord);
   } catch(e) {
     console.log(e);
     response.status(500).send('Error deleting list');

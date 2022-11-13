@@ -40,9 +40,7 @@ router.get('/lists/:id/:listName', async (request, response) => {
 
 router.put('/lists/:id', async (request, response) => {
   try {
-    console.log(request.body);
     const updatedList = await List.findByIdAndUpdate(request.params.id, request.body);
-    console.log(updatedList);
     response.status(200).send(updatedList);
   } catch(e) {
     console.log(e);

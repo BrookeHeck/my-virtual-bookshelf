@@ -5,11 +5,10 @@ const server = require('./src/server');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3001;
-const DB_URI = process.env.DB_URI;
 
 const startApp = () => {
   try {
-    db.connect(DB_URI)
+    db.connect(process.env.DB_URI)
   } catch(e) {
     console.log(e);
   }

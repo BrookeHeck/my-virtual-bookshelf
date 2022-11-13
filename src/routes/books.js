@@ -37,8 +37,9 @@ router.put('/my-books/:id', async (request, response) => {
 
 router.delete('/my-books/:id', async (request, response) => {
   try {
+    const deleteBook = await Book.find({_id: request.params.id});
     await Book.deleteOne({ _id: request.params.id });
-    response.status(200).send(`Book _id ${request.params.id} successfully deleted`);
+    response.status(200).send(deleteBook);
   } catch(e) {
     response.status(500).send('Error deleting book');
   }

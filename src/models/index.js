@@ -1,25 +1,22 @@
 'use strict';
 
-const mongoose = require('mongoose');
-const MongoMemoryServer = require('mongodb-memory-server').MongoMemoryServer;
-const db = mongoose.connection;
 require('dotenv').config();
+const mongoose = require('mongoose');
 
-const getServer = async () => {
-  return MongoMemoryServer.create();
-}
-const memoryServer = getServer();
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error'));
+db.once('open', function() {
+  console.log('Mongoose is connected');
+});
 
 module.exports = {
   db: db,
 
-  connect: async () => {
+  connect: async (uri) => {
       
       db.on('error', console.error.bind(console, 'connection error'));
       db.once('open', function () {
-      console.log('Mongoose is connected');
       });
-      const uri = (await memoryServer).getUri();
       mongoose.connect(uri);
     },
   disconnect: async () => {

@@ -38,12 +38,25 @@ router.get('/lists/:id/:listName', async (request, response) => {
   }
 });
 
-router.put('/lists/:id/:book_id', async () => {
+router.put('/lists/:id', async (request, response) => {
   try {
-    const listRecord = await List.find({user_id: request.params.id, listName: request.params.listName});
-    listRecord.books.push(request.params.book_id);
+    const updatedList = await List.findByIdAndUpdate(request.params.id, request.body);
+    response.status(200).send(updatedList);
   } catch(e) {
     console.log(e);
     response.status(500).send('Error adding book to list');
   }
 });
+
+router.delete('/lists/:id', async (request, response) => {
+  try {
+    const listRecord = await List.find({_id: request.params.id});
+    await List.deleteOne({ _id: request.params.id });
+    response.status(200).send(listRecord);
+  } catch(e) {
+    console.log(e);
+    response.status(500).send('Error deleting list');
+  }
+});
+
+module.exports = router;

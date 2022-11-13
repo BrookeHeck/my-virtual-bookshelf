@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3001;
 
 const startApp = () => {
   try {
-    db.connect()
+    db.connect(process.env.DB_URI)
   } catch(e) {
     console.log(e);
   }

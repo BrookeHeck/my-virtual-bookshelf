@@ -17,9 +17,6 @@ app.use(express.json());
 
 
 // ROUTES
-app.get('/', (request, response) => {
-  response.status(200).send('Books :)');
-});
 app.use(userRouter);
 app.use(bookRouter);
 app.use(noteRouter);

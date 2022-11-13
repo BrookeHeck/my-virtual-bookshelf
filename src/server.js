@@ -15,7 +15,7 @@ const listRouter = require('./routes/lists');
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+app.get('/favicon.ico', (req, res) => res.status(204));
 
 // ROUTES
 app.use(userRouter);
